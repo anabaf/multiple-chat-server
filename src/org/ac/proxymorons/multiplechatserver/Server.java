@@ -38,7 +38,7 @@ public class Server {
                 cacheExecutor.submit(serverWorker = new ServerWorker(clientSocket, this));
 
             }
-        } catch (IOException e)  {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
@@ -105,43 +105,33 @@ public class Server {
         @Override
         public void run() {
 
-            String message = "";
-            String reply = "";
+                String message = "";
+                String reply = "";
 
-            try {
-                BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-                String enterChat = in.readLine();
-                System.out.println(enterChat);
-                String[] clientInput = enterChat.split(" ");
-                String clientNickname = clientInput[0];
+                try {
+                    BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+                    PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
 
-                if (!clientsList.containsKey(clientSocket)) {
-                    clientsList.put(clientSocket, clientNickname);
-                }
-                while (true) {
-                    try {
-                        message = in.readLine();
-                        message = message.substring(message.indexOf(" ") + 1);
+                    out.println("Enter your name:");
+                    String clientNickname = in.readLine();
 
-                        if (message == null) {
-                            break;
-                        }
-                        if (message != null) {
+                    if (!clientsList.containsKey(clientSocket)) {
+                        clientsList.put(clientSocket, clientNickname);
+                    }
 
-
+                    while ((message = in.readLine()) != null) {
+                        if (!message.isEmpty()) {
                             if (message.equals("/list")) {
                                 server.sendListToClient(clientSocket);
-                            }
-
-                            if (message.equals("/quit")) {
+                            } else if (message.equals("/quit")) {
                                 reply = clientNickname + " left the chat!";
                                 server.sendAll(reply);
                                 clientsList.remove(clientSocket);
-
-                                if(message.equals("/name")) {
-
-                                }
-
+                                break;
+                            } else if (message.startsWith("/name ")) {
+                                String newNickname = message.substring(6);
+                                clientsList.put(clientSocket, newNickname);
+                                clientNickname = newNickname;
                             } else if (message.contains("/whisper")) {
                                 String[] getClient = message.split(" ");
                                 String client = getClient[1];
@@ -150,25 +140,25 @@ public class Server {
                                 String whisperMess = middleSplit.substring(middleSplit.indexOf(" ") + 1);
 
                                 server.whisperToClient(client, whisperMess, clientSocket);
-
-
                             } else {
                                 reply = clientNickname + ": " + message;
                                 server.sendAll(reply);
                                 System.out.println(reply);
                             }
                         }
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
                     }
+
+                    // Client has disconnected
+                    clientsList.remove(clientSocket);
+                    reply = clientNickname + " left the chat!";
+                    server.sendAll(reply);
+                    clientSocket.close();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
-
-            } catch (IOException e) {
-                throw new RuntimeException(e);
             }
+
         }
-
-
     }
-}
+
 
