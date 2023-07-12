@@ -9,21 +9,23 @@ The Multiple Chat Server is a simple chat application implemented in Java. It al
 * [Contributing](#contributing)
 
 ## Usage
-Clients can connect to the server using a socket connection.
+1. Clients can connect to the server using a socket connection.
 
-Upon connecting, clients are welcomed into the chat environment and can start sending and receiving messages.
+2. Upon connecting, clients are welcomed into the chat environment and can start sending and receiving messages.
 
-Engage in dynamic conversations with multiple users simultaneously, fostering real-time communication and collaboration.
+3. Engage in dynamic conversations with multiple users simultaneously, fostering real-time communication and collaboration.
 
-Available commands:
+4. Available commands:
 
-- /list: Retrieves the list of all connected clients, allowing users to see who else is online.
-- /quit: Terminates the connection and gracefully exits the chat session.
-- /name <new-name>: Allows users to change their display name to enhance personalization and identification.
-- /whisper <username> <message>: Enables private messaging by sending a message to a specific user only.
+  - /list: Retrieves the list of all connected clients, allowing users to see who else is online.
+  - /quit: Terminates the connection and gracefully exits the chat session.
+  - /name <new-name>: Allows users to change their display name to enhance personalization and identification.
+  - /whisper <username> <message>: Enables private messaging by sending a message to a specific user only.
 
  
 ## Features
+- Socket Programming: Utilizes socket programming to establish network communication between the server and clients, enabling real-time messaging and interaction.
+- TCP Usage: Implements the Transmission Control Protocol (TCP) as the underlying protocol for the socket communication, ensuring reliable and ordered data transmission.
 - Multiple clients: The server supports connections from multiple clients, allowing them to interact concurrently.
 - Real-time messaging: Users can send and receive messages instantly, facilitating seamless communication.
 - Command functionality: A set of commands enhances the user experience, offering capabilities such as user listing, name changing, and private messaging.
