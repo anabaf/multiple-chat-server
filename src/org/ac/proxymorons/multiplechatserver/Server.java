@@ -148,7 +148,6 @@ public class Server {
                         }
                     }
 
-                    // Client has disconnected
                     clientsList.remove(clientSocket);
                     reply = clientNickname + " left the chat!";
                     server.sendAll(reply);
